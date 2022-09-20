@@ -1,0 +1,174 @@
+
+body {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.8);
+    flex-direction: column;
+    align-items: center;
+}
+
+.top-bar {
+    width: 100%;
+    height: 100px;
+    background-color: gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.url-button {
+    width: 300px;
+    margin-bottom: 30px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    background-color: black;
+}
+
+.user-menu {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+.user-menu > span {
+    margin: 5px;
+    background-color: white;
+    border-radius: 15px;
+    text-align: center;
+    width: 100px;
+    padding: 3px;
+    cursor: pointer;
+
+}
+
+.containers {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.0);
+    width: 100%;
+    justify-content: center;
+    /*background-color: cadetblue;*/
+    padding-top: 30px;
+    padding-left: 260px;
+
+}
+
+.genre-menu {
+    /*background-color: tomato;*/
+    display: flex;
+    position: fixed;
+    text-align: center;
+    height: 600px;
+    left:10px;
+
+
+}
+.field {
+    display: flex;
+    flex-direction: column;
+}
+.article-span {
+    font-weight: bold;
+}
+.is-link {
+    margin-bottom: 20px;
+}
+#genre-default {
+    color: rgba(0,0,0,0.5);
+}
+
+.koreanSong, .popSong {
+    display: flex;
+    flex-direction: column;
+    /*background-color: white;*/
+    width: 130px;
+}
+
+.genre-p, .genre-k {
+    background-color: white;
+    font-size: 20px;
+    padding: 5px 20px;
+    margin: 5px 5px 10px 5px;
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.0);
+}
+
+.genre-k-list, .genre-p-list {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 5px 20px;
+    margin: 5px 5px 10px 5px;
+    height: 600px;
+}
+
+.genre-k-list > span, .genre-p-list > span {
+    margin-bottom: 10px;
+    cursor: pointer;
+
+}
+
+.genre-k-list > span:hover, .genre-p-list > span:hover {
+    font-weight: bold;
+}
+
+.album-card {
+    display: flex;
+    background-color: white;
+    width: 350px;
+    height: 150px;
+    margin: 0px 10px 40px 10px;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+.album-img {
+    width: 150px;
+    height: 150px;
+}
+
+.album-item {
+    display: flex;
+    flex-direction: column;
+    padding-left: 15px;
+    text-align: left;
+    justify-content: center;
+}
+
+.music-title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.music-artist {
+    font-size: 15px;
+    margin: 20px 0px;
+}
+
+.album-title {
+    font-size: 13px;
+}
+
+.moveTopBtn {
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  bottom: 1rem;
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  background: white;
+  color: rgba(0,0,0,1);
+  border-radius: 30px;
+    text-align: center;
+ }
+.moveTopBtn > span {
+
+}
