@@ -13,8 +13,17 @@
     </style>
     <script>
         function post() {
-            alert("등록되었습니다!")
-            window.location.reload()
+            let url = $('#url-input').val()
+            let genre = $('#genre-input').val()
+            $.ajax({
+                type: 'POST',
+                url: '/main',
+                data: {url_give: url, genre_give: genre},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
         }
     </script>
 </head>
@@ -35,10 +44,10 @@
                 <div class="media-content">
                     <div class="field">
                         <span class="article-span">URL</span>
-                        <input class="input is-link" type="text" placeholder="URL을 입력하세요">
+                        <input id="url-input" class="input is-link" type="text" placeholder="URL을 입력하세요">
                         <span class="article-span">장르</span>
                         <div class="select is-info">
-                            <select>
+                            <select id="genre-input">
                                 <option id="genre-default">--장르를 선택하세요--</option>
                                 <option>가요</option>
                                 <option>발라드</option>
@@ -79,7 +88,12 @@
                 <span>가요/전체</span>
                 <span>발라드</span>
                 <span>댄스</span>
-                <span>R&B</span>
+                <span>R&B/소울</span>
+                <span>락</span>
+                <span>랩/힙합</span>
+                <span>일렉트로니카</span>
+                <span>인디</span>
+                <span>브루스/포크</span>
             </div>
 
         </div>
@@ -89,7 +103,10 @@
                 <span>POP/전체</span>
                 <span>팝</span>
                 <span>락</span>
-                <span>R&B</span>
+                <span>R&B/소울</span>
+                <span>일렉트로니카</span>
+                <span>랩/힙합</span>
+                <span>블루스/포크/컨트리</span>
 
             </div>
 
