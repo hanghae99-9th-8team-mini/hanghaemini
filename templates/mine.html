@@ -2,119 +2,34 @@
 <html lang="en">
 
 <head>
+    <title>픽플 | 마이페이지</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <meta property="og:title" content="스위터 - 세상을 달달하게"/>
+    <meta property="og:description" content="mini project for Web Plus"/>
+    <meta property="og:image" content="{{ url_for('static', filename='ogimg.png') }}"/>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 
-    <title>픽플 | 마이페이지</title>
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="{{ url_for('static', filename='myjs.js') }}"></script>
 
-    <style>
-        * {
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        .mytitle {
-            max-width: 700px;
-            height: 700px;
-            margin: 20px auto 0px auto;
-        }
-
-        .mytitle > button {
-            width: 350px;
-            height: 50px;
-
-            background-color: transparent;
-            color: white;
-
-            border-radius: 50px;
-            border: 1px solid white;
-            margin-top: 10px;
-        }
-
-        .mytitle > button:hover {
-            border: 2px solid white;
-        }
-
-        .is-sparta {
-            color: #e8344e !important;
-        }
-
-        .button.is-sparta {
-            background-color: #e8344e;
-            border-color: transparent;
-            color: #fff !important;
-        }
-
-        .button.is-sparta.is-outlined {
-            background-color: transparent;
-            border-color: #e8344e;
-            color: #e8344e !important;
-        }
-
-        mycomment {
-            color: gray;
-        }
-
-        .wrap {
-            width: 1200px;
-            margin: 20px auto 0px auto;
-        }
-
-        .mypost {
-            max-width: 500px;
-            width: 95%;
-
-            margin: 20px auto 0px auto;
-
-            box-shadow: 0px 0px 3px 0px gray;
-            padding: 20px;
-
-            display: none;
-        }
-
-        .mybtn {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-
-            margin-top: 10px;
-        }
-
-        .mybtn > button {
-            margin-right: 10px;
-        }
-
-        .modal-content {
-            width: 600px;
-            max-width: 80%;
-        }
-
-        .image img {
-            width: 240px;
-            height: 180px;
-            max-width: 100%;
-            max-height: 100%;
-        }
-    </style>
     <script>
         $(document).ready(function () {
-            get_posts('{{ user_info.username }}')
-        })
-
-        function sign_out() {
-            $.removeCookie('mytoken', {path: '/'});
-            alert('로그아웃!')
-            window.location.href = "/login"
-        }
+                get_posts("{{ user_info.username }}")
+            })
 
         function update_profile() {
             let name = $('#input-name').val()
@@ -142,14 +57,32 @@
                 }
             });
         }
+
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+
+
     </script>
 </head>
 
 <body>
 <div class="mytitle">
-    <div class="hero-body" style="padding-bottom:1rem;margin:auto;min-width: 500px">
+<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <img src="{{ url_for('static', filename='logo.png') }}">
+            <strong class="is-sparta"
+                    style="font-family: 'Stylish', sans-serif;font-size: larger;">픽플</strong>
+        </a>
+    </div>
+</nav>
+    <br><br>
+    <div class="hero-body">
         <article class="media">
-            <figure class="media-left">
+            <figure class="media-left" style="align-self: center">
                 <a class="image is-99x99" href="#">
                     <img class="is-rounded" src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
                 </a>
@@ -157,13 +90,16 @@
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <strong>닉네임 {{ user_info.username }}</strong><br>
-                        <small>아이디 {{ user_info.profile_name }}</small><br>
+                        <strong>아이디: @{{ user_info.username }}</strong><br>
+                        <small>닉네임: {{ user_info.profile_name }}</small>
+                        <br>
                         {{ user_info.profile_info }}
                     </p>
-                </div>
 
+
+                </div>
             </div>
+
         </article>
         {% if status %}
         <nav id="btns-me" class="level is-mobile" style="margin-top:2rem">
@@ -179,6 +115,7 @@
                                                                      aria-hidden="true"></i></span>
             </a>
         </nav>
+
         <div class="modal" id="modal-edit">
             <div class="modal-background" onclick='$("#modal-edit").removeClass("is-active")'></div>
             <div class="modal-content">
@@ -204,8 +141,8 @@
                                                    name="resume">
                                             <span class="file-cta"><span class="file-icon"><i
                                                     class="fa fa-upload"></i></span>
-                                <span class="file-label">파일 선택</span>
-                            </span>
+                                                    <span class="file-label">파일 선택</span>
+                                                </span>
                                             <span id="file-name" class="file-name"
                                                   style="width:100%;max-width:100%">{{ user_info.profile_pic }}</span>
                                         </label>
@@ -218,8 +155,8 @@
 
                                 <p class="control">
 
-                        <textarea id="textarea-about" class="textarea"
-                                  placeholder="자기소개하기">{{ user_info.profile_info }}</textarea>
+                                            <textarea id="textarea-about" class="textarea"
+                                                      placeholder="자기소개하기">{{ user_info.profile_info }}</textarea>
                                 </p>
                             </div>
                             <nav class="level is-mobile">
@@ -244,90 +181,63 @@
                     onclick='$("#modal-edit").removeClass("is-active")'></button>
         </div>
         {% endif %}
-
     </div>
-    <div class="mypost" id="post-box">
-        <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="url" placeholder="영화 URL">
-            <label for="floatingInput">영화URL</label>
-        </div>
+</div>
 
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="inputGroupSelect01">별점</label>
-            <select class="form-select" id="inputGroupSelect01">
-                <option selected>--선택하기--</option>
-                <option value="1">⭐</option>
-                <option value="2">⭐⭐</option>
-                <option value="3">⭐⭐⭐</option>
-                <option value="4">⭐⭐⭐⭐</option>
-                <option value="5">⭐⭐⭐⭐⭐</option>
-            </select>
-        </div>
 
-        <div class="form-floating">
-            <textarea class="form-control" placeholder="코멘트" id="floatingTextarea2" style="height: 100px"></textarea>
-            <label for="floatingTextarea2">코멘트</label>
-        </div>
-
-        <div class="mybtn">
-            <button type="button" class="btn btn-dark">기록하기</button>
-            <button onclick="close_box()" class="btn btn-outline-dark">닫기</button>
-        </div>
-
-        </select>
-    </div>
-    <div class="wrap">
-        <h3>my 픽업 리스트</h3>
-        <div id="cards-box" class="row row-cols-1 row-cols-md-4 g-4">
-            <div class="col">
-                <div class="card">
-                    <img src="https://musicmeta-phinf.pstatic.net/album/006/810/6810656.jpg?type=r360Fll&v=20220410171916"
-                         class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">타이틀곡</h5>
-                        <p class="card-title">아티스트</p>
-                        <p class="card-text">앨범제목</p>
-                        <p class="mycomment"></p>
-                    </div>
+<div class="wrap">
+    <div id="cards-box"><br><br>
+        <h4>my 픽업 리스트</h4>
+        <div class="col">
+            <div class="card">
+                <img src="https://musicmeta-phinf.pstatic.net/album/006/810/6810656.jpg?type=r360Fll&v=20220410171916"
+                     class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">타이틀곡 : </h5>
+                    <p class="card-title">아티스트 : </p>
+                    <p class="card-text">앨범제목 : </p>
+                    <p class="mycomment"></p><br>
                 </div>
             </div>
-            <div class="col">
-                <div class="card">
-                    <img src="https://musicmeta-phinf.pstatic.net/album/006/810/6810656.jpg?type=r360Fll&v=20220410171916"
-                         class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">앨범제목</h5>
-                        <p class="card-title">아티스트</p>
-                        <p class="card-text">앨범제목</p>
-                        <p class="mycomment"></p>
-                    </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img src="https://musicmeta-phinf.pstatic.net/album/006/810/6810656.jpg?type=r360Fll&v=20220410171916"
+                     class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">타이틀곡 : </h5>
+                    <p class="card-title">아티스트 : </p>
+                    <p class="card-text">앨범제목 : </p>
+                    <p class="mycomment"></p><br>
                 </div>
             </div>
-            <div class="col">
-                <div class="card">
-                    <img src="https://musicmeta-phinf.pstatic.net/album/006/810/6810656.jpg?type=r360Fll&v=20220410171916"
-                         class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">앨범제목</h5>
-                        <p class="card-title">아티스트</p>
-                        <p class="card-text">앨범제목</p>
-                        <p class="mycomment"></p>
-                    </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img src="https://musicmeta-phinf.pstatic.net/album/006/810/6810656.jpg?type=r360Fll&v=20220410171916"
+                     class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">타이틀곡 : </h5>
+                    <p class="card-title">아티스트 : </p>
+                    <p class="card-text">앨범제목 : </p>
+                    <p class="mycomment"></p><br>
                 </div>
             </div>
-            <div class="col">
-                <div class="card">
-                    <img src="https://musicmeta-phinf.pstatic.net/album/006/810/6810656.jpg?type=r360Fll&v=20220410171916"
-                         class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">제목</h5>
-                        <p class="card-text">아티스트</p>
-                        <p class="mycomment"></p>
-                    </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img src="https://musicmeta-phinf.pstatic.net/album/006/810/6810656.jpg?type=r360Fll&v=20220410171916"
+                     class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">타이틀곡 : </h5>
+                    <p class="card-title">아티스트 : </p>
+                    <p class="card-text">앨범제목 : </p>
+                    <p class="mycomment"></p>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 
