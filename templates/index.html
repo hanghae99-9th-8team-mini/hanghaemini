@@ -12,28 +12,116 @@
 
     </style>
     <script>
+        $(document).ready(function () {
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: 'GET',
+                url: '/main',
+                data: {},
+                success: function (response) {
+                    let rows = response['musics']
+                    for (let i = 0; i < rows.length; i++) {
+                        let title = rows[i]['title']
+                        let artist = rows[i]['artist']
+                        let album_title = rows[i]['album_title']
+                        let album_img = rows[i]['album_img']
+                        let genre = rows[i]['genre']
+
+                        console.log(title,artist,album_img,album_title,genre)
+                    }
+                }
+                });
+            }
+
         function post() {
             let url = $('#url-input').val()
             let genre = $('#genre-input').val()
-            $.ajax({
-                type: 'POST',
-                url: '/main',
-                data: {url_give: url, genre_give: genre},
-                success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
-                }
-            });
+            if (url == "") {
+                alert("URL을 입력하세요!")
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/main',
+                    data: {url_give: url},
+                    success: function (response) {
+                        if (response['msg'] == '이미 등록된 URL입니다!') {
+                            alert(response['msg'])
+                        } else {
+                            alert(response['msg'])
+                            window.location.reload()
+                        }
+                    }
+                });
+            }
         }
     </script>
 </head>
 <body>
-<div class="top-bar">
-    <img src="" class="logo">
-    <div class="user-menu">
-        <span onclick="alert('로그인 버튼!')">로그인</span>
-        <span onclick="alert('마이페이지 버튼!')">마이페이지</span>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="https://bulma.io">
+      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+    </a>
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+
+
+
     </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light">
+            Log in
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="tabs is-centered">
+  <ul>
+    <li class="is-active">
+      <a>
+        <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+        <span>Pictures</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+        <span>Music</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
+        <span>Videos</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span class="icon is-small"><i class="far fa-file-alt" aria-hidden="true"></i></span>
+        <span>Documents</span>
+      </a>
+    </li>
+  </ul>
 </div>
 <button class="button is-danger url-button" onclick='$("#modal-post").addClass("is-active")'>등록하기</button>
 <div class="modal" id="modal-post">
@@ -45,19 +133,6 @@
                     <div class="field">
                         <span class="article-span">URL</span>
                         <input id="url-input" class="input is-link" type="text" placeholder="URL을 입력하세요">
-                        <span class="article-span">장르</span>
-                        <div class="select is-info">
-                            <select id="genre-input">
-                                <option id="genre-default">--장르를 선택하세요--</option>
-                                <option>가요</option>
-                                <option>발라드</option>
-                                <option>댄스</option>
-                                <option>R&B</option>
-                                <option>팝</option>
-                                <option>락</option>
-                            </select>
-                        </div>
-
                     </div>
                     <nav class="level is-mobile">
                         <div class="level-left">
@@ -81,37 +156,6 @@
             onclick='$("#modal-post").removeClass("is-active")'></button>
 </div>
 <div class="containers">
-    <div class="genre-menu">
-        <div class="koreanSong">
-            <span class="genre-k">가요</span>
-            <div class="genre-k-list">
-                <span>가요/전체</span>
-                <span>발라드</span>
-                <span>댄스</span>
-                <span>R&B/소울</span>
-                <span>락</span>
-                <span>랩/힙합</span>
-                <span>일렉트로니카</span>
-                <span>인디</span>
-                <span>브루스/포크</span>
-            </div>
-
-        </div>
-        <div class="popSong">
-            <span class="genre-p">팝송</span>
-            <div class="genre-p-list">
-                <span>POP/전체</span>
-                <span>팝</span>
-                <span>락</span>
-                <span>R&B/소울</span>
-                <span>일렉트로니카</span>
-                <span>랩/힙합</span>
-                <span>블루스/포크/컨트리</span>
-
-            </div>
-
-        </div>
-    </div>
     <div class="content">
         <div class="album-card">
             <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
@@ -302,7 +346,6 @@
                 <span class="album-title">앨범명</span>
             </div>
         </div>
-
 
     </div>
     <div class="moveTopBtn" style="cursor:pointer;" onclick="window.scrollTo(0,0);">
