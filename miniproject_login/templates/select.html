@@ -23,28 +23,164 @@
 		<!-- JS -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <title>장르선택페이지</title>
 
     <style>
+        * {
+            font-family: 'Jua', sans-serif;
+            margin: 0;
+            padding: 0;
+            /*a 태그 속성값 없애기*/
+            text-decoration: none;
+        }
+
+        .logo {
+            margin: 10px 10px;
+            color: darkblue;
+            color: darkblue;
+        }
+
+        .Box1 {
+            display: flex;
+            flex-flow: row;
+            justify-content: center;
+            margin: 50px 20px 0px;
+        }
+
+        .Box2 {
+            display: flex;
+            flex-flow: row;
+            justify-content: center;
+            margin: 50px 20px 0px;
+        }
+
+        .Box1 > .wrap1 {
+            margin: 0px 10px;
+            /*이미지 위에 텍스트 넣기*/
+            position: relative;
+        }
+
+        .Box1 > .wrap2 {
+            margin: 0px 10px;
+            position: relative;
+        }
+
+        .wrap1 img {
+            width: 500px;
+            height: 350px;
+            vertical-align: middle;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px gray;
+        }
+
+        .wrap2 img {
+            width: 500px;
+            height: 350px;
+            vertical-align: middle;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px gray;
+        }
+
+        .Box1 .wrap1 .select1Text {
+            /*이미지 위에 텍스트 넣기 4줄*/
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translate(-50%);
+            font-size: 30px;
+            text-shadow: 0px 0px 10px white;
+            color: black;
+        }
+
+        .Box1 .wrap2 .select2Text {
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translate(-50%);
+            font-size: 30px;
+            color: whitesmoke;
+        }
+
+        .Box2 > .Box2-btn1,.Box2-btn2 {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+            width: 500px;
+            margin: 0px 10px;
+        }
+
+        .Box2 > .Box2-btn1 > button {
+            width: 240px;
+            margin-top: 10px;
+            box-shadow: 0px 0px 5px gray;
+        }
+
+        .Box2 > .Box2-btn1 > button:hover {
+            background-color: #008aff;
+            color: white;
+        }
+
+        .Box2 > .Box2-btn2 > button {
+            width: 240px;
+            margin-top: 10px;
+            box-shadow: 0px 0px 5px gray;
+        }
+
+        .Box2 > .Box2-btn2 > button:hover {
+            background-color: #e8344e;
+            color: white;
+        }
 
     </style>
 
     <script>
-      function login(){
-        window.location.href="/login"
-      }
-      function logout(){
-        $.removeCookie('mytoken');
-        alert('로그아웃!')
-        window.location.reload()
-      }
+
     </script>
 </head>
 <body>
-    <div>
-        <button onclick="login()">로그인</button>
-        <button onclick="logout()">로그아웃</button>
-        <button onclick="logout()">마이페이지</button>
+<nav class="logo">
+    <div class="logo">
+        <i class="fa-sharp fa-solid fa-circle-play"></i><a href="#" class="logo">픽플</a>
     </div>
+</nav>
+<main>
+    <div class="Box1">
+        <section class="wrap1">
+            <a href="#"><img src="../static/select1.jpg"></a>
+            <div class="select1Text">
+                <p>가요</p>
+            </div>
+        </section>
+        <section class="wrap2">
+            <!--a태그 안에 이미지 넣으면, 이미지 클릭 시 원하는 링크로 이동-->
+            <a href="#"><img src="../static/select2.jpg"></a>
+            <div class="select2Text">
+                <p>POP</p>
+            </div>
+        </section>
+    </div>
+    <div class="Box2">
+        <div class="Box2-btn1" >
+            <!--버튼에 링크 거는 방법: onclick="window.location.href='#'"-->
+            <button id="song1" type="button" class="btn btn-light" onclick="window.location.href='/home'">발라드</button>
+            <button id="song2" type="button" class="btn btn-light" onclick="window.location.href='/home'">댄스</button>
+            <button id="song3" type="button" class="btn btn-light" onclick="window.location.href='/home'">R&B/소울</button>
+            <button id="song4" type="button" class="btn btn-light" onclick="window.location.href='#'">락</button>
+            <button id="song5" type="button" class="btn btn-light" onclick="window.location.href='#'">랩/힙합</button>
+            <button id="song6" type="button" class="btn btn-light" onclick="window.location.href='#'">일렉트로니카</button>
+            <button id="song7" type="button" class="btn btn-light" onclick="window.location.href='#'">인디</button>
+            <button id="song8" type="button" class="btn btn-light" onclick="window.location.href='#'">브루스/포크</button>
+        </div>
+        <div class="Box2-btn2">
+            <button id="pop1" type="button" class="btn btn-light" onclick="window.location.href='#'">팝</button>
+            <button id="pop2" type="button" class="btn btn-light" onclick="window.location.href='#'">락</button>
+            <button id="pop3" type="button" class="btn btn-light" onclick="window.location.href='#'">R&B/소울</button>
+            <button id="pop4" type="button" class="btn btn-light" onclick="window.location.href='#'">일렉트로니카</button>
+            <button id="pop5" type="button" class="btn btn-light" onclick="window.location.href='#'">랩/힙합</button>
+            <button id="pop6" type="button" class="btn btn-light" onclick="window.location.href='#'">블루스/포크/컨트리</button>
+        </div>
+    </div>
+</main>
 </body>
 </html>

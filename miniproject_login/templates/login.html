@@ -111,7 +111,7 @@
                     success: function (response) {
                         if (response['result'] == 'success') {
                             $.cookie('mytoken', response['token'], {path: '/'});
-                            window.location.replace("/")
+                            window.location.href="/select"
                         } else {
                             alert(response['msg'])
                         }
@@ -237,6 +237,10 @@
                 });
             }
 
+            function return_main() {
+                window.location.href = "/"
+            }
+
         </script>
 
     </head>
@@ -285,6 +289,12 @@
                                     <button class="level-item button is-sparta is-outlined"
                                             onclick="toggle_sign_up()">
                                         회원가입하기
+                                    </button>
+                                </nav>
+                                <nav class="level is-mobile" style="border: #e8344e">
+                                    <button class="level-item button is-sparta is-outlined"
+                                            onclick="return_main()">
+                                        메인으로 돌아가기
                                     </button>
                                 </nav>
                             </div>
