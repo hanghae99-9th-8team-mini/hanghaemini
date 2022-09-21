@@ -13,8 +13,26 @@
     </style>
     <script>
         $(document).ready(function () {
-            listing();
-        });
+            listing()
+
+            $('.genre-div-k').hide();
+            $('.genre-div-p').hide();
+
+            $('#k-toggle').click(function () {
+                $('.genre-div-p').hide();
+                $('.genre-div-k').show();
+            });
+
+            $('#p-toggle').click(function () {
+                $('.genre-div-k').hide();
+                $('.genre-div-p').show();
+            });
+        })
+
+
+        function music_info() {
+            alert("상세페이지test")
+        }
 
         function listing() {
             $.ajax({
@@ -30,19 +48,33 @@
                         let album_img = rows[i]['album_img']
                         let genre = rows[i]['genre']
 
-                        console.log(title,artist,album_img,album_title,genre)
+                        console.log(title, artist, album_img, album_title, genre)
+                        let temp_html = `<div class="album-card" onclick="music_info()">
+                                            <img src="${album_img}"
+                                                 class="album-img">
+                                            <div class="album-item">
+                                                <span class="music-title">${title}</span>
+                                                <span class="music-artist">${artist}</span>
+                                                <span class="album-title">${album_title}</span>
+                                                <span class="album-genre" id="genre">${genre}</span>
+                                            </div>
+                                        </div>`
+                        $('#card-div').append(temp_html)
                     }
                 }
-                });
-            }
+            });
+        }
+
+        // function genre()
+        // let genre_text = $('.album-genre').text();
+
 
         function post() {
             let url = $('#url-input').val()
             let genre = $('#genre-input').val()
             if (url == "") {
                 alert("URL을 입력하세요!")
-            }
-            else {
+            } else {
                 $.ajax({
                     type: 'POST',
                     url: '/main',
@@ -62,68 +94,62 @@
 </head>
 <body>
 <nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="https://bulma.io">
-      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-    </a>
+    <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+        </a>
 
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start">
-
-
-
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
     </div>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-primary">
-            <strong>Sign up</strong>
-          </a>
-          <a class="button is-light">
-            Log in
-          </a>
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+
+
         </div>
-      </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-primary">
+                        <strong>로그인</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
-<div class="tabs is-centered">
-  <ul>
-    <li class="is-active">
-      <a>
-        <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
-        <span>Pictures</span>
-      </a>
-    </li>
-    <li>
-      <a>
-        <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
-        <span>Music</span>
-      </a>
-    </li>
-    <li>
-      <a>
-        <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
-        <span>Videos</span>
-      </a>
-    </li>
-    <li>
-      <a>
-        <span class="icon is-small"><i class="far fa-file-alt" aria-hidden="true"></i></span>
-        <span>Documents</span>
-      </a>
-    </li>
-  </ul>
+<div class="tabs is-centered is-large">
+    <ul>
+        <li><a id="k-toggle">가요</a></li>
+        <li><a id="p-toggle">pop</a></li>
+    </ul>
 </div>
-<button class="button is-danger url-button" onclick='$("#modal-post").addClass("is-active")'>등록하기</button>
+<div class="genre-div-k">
+    <button onclick="genre()" class="button">발라드</button>
+    <button class="button">댄스</button>
+    <button class="button">R&B/소울</button>
+    <button class="button">락</button>
+    <button class="button">랩/힙합</button>
+    <button class="button">일렉트로니카</button>
+    <button class="button">인디</button>
+    <button class="button">블루스/포크</button>
+</div>
+<div class="genre-div-p">
+    <button class="button">팝</button>
+    <button class="button">락</button>
+    <button class="button">R&B/소울</button>
+    <button class="button">일렉트로니카</button>
+    <button class="button">랩/힙합</button>
+    <button class="button">블루스/포크/컨트리</button>
+</div>
+<div class="url-button-div">
+    <button class="button is-danger url-button" onclick='$("#modal-post").addClass("is-active")'>등록하기</button>
+</div>
+
 <div class="modal" id="modal-post">
     <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
     <div class="modal-content">
@@ -156,196 +182,7 @@
             onclick='$("#modal-post").removeClass("is-active")'></button>
 </div>
 <div class="containers">
-    <div class="content">
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
-        <div class="album-card">
-            <img src="https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/993/160/82993160_1663554637662_1_140x140.JPG/dims/resize/Q_80,0"
-                 class="album-img">
-            <div class="album-item">
-                <span class="music-title">곡 타이틀</span>
-                <span class="music-artist">아티스트</span>
-                <span class="album-title">앨범명</span>
-            </div>
-        </div>
+    <div class="content" id="card-div">
 
     </div>
     <div class="moveTopBtn" style="cursor:pointer;" onclick="window.scrollTo(0,0);">

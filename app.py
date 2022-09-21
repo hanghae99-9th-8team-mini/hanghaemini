@@ -26,7 +26,8 @@ def upload_music():
 
         div = soup.select_one('#downloadfrm > div > div > div.entry')
         title = div.select_one('div.info > div.song_name').get_text(strip= True).lstrip("곡명")
-        artist = div.select_one('div.artist > a > span:nth-child(1)').text
+        artist = div.select_one('div.artist').text
+        # downloadfrm > div > div > div.entry > div.info > div.artist
         album_title = div.select_one('div.meta > dl > dd:nth-child(2) > a').get_text()
         album_img = soup.select_one('#downloadfrm > div > div > div.thumb > a > img')["src"]
         genre = div.select_one('div.meta > dl > dd:nth-child(6)').get_text()
