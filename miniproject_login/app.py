@@ -184,10 +184,10 @@ def music_posting():
 @app.route("/posting", methods=['GET'])
 def get_posts():
     username_receive = request.args.get("username_give")
-    if username_receive == "":
-        posts = list(db.minisong.find({}, {'_id': False}))
-    else:
+    if username_receive != '':
         posts = list(db.minisong.find({"username": username_receive}, {'_id': False}))
+    else:
+        posts = list(db.minisong.find({}, {'_id': False}))
     return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "posts": posts})
 
 

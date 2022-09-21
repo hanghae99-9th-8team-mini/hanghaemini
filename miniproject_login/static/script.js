@@ -8,23 +8,6 @@
             window.location.href = '/'
         }
 
-        $(document).ready(function () {
-            listing()
-
-            $('.genre-div-k').hide();
-            $('.genre-div-p').hide();
-
-            $('#k-toggle').click(function () {
-                $('.genre-div-p').hide();
-                $('.genre-div-k').show();
-            });
-
-            $('#p-toggle').click(function () {
-                $('.genre-div-k').hide();
-                $('.genre-div-p').show();
-            });
-        })
-
         function post() {
             let url = $('#url-input').val()
             let genre = $('#genre-input').val()

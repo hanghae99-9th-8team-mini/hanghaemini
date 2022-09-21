@@ -35,6 +35,19 @@
 <script>
     $(document).ready(function () {
         listing('{{ user_info.username }}');
+
+        $('.genre-div-k').hide();
+            $('.genre-div-p').hide();
+
+            $('#k-toggle').click(function () {
+                $('.genre-div-p').hide();
+                $('.genre-div-k').show();
+            });
+
+            $('#p-toggle').click(function () {
+                $('.genre-div-k').hide();
+                $('.genre-div-p').show();
+            });
     })
 </script>
 <body>
