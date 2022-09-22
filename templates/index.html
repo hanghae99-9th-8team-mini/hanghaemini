@@ -15,45 +15,76 @@
     <script>
         $(document).ready(function () {
             listing()
-
             $('.genre-div-k').hide();
             $('.genre-div-p').hide();
 
             $('#k-toggle').click(function () {
                 $('.genre-div-k').toggle();
             });
-
         })
 
         function music_info() {
             alert("상세페이지test")
         }
 
-        function heart_click() {
-            alert("하트를 눌렀습니다!")
+        function heart_click(url, type) {    //하트 클릭시 정보 전송
+            console.log(url, type)
+            let i_like = $('#'+url).find("i")
+            console.log(i_like)
+            if (i_like.hasClass("check-heart")) {         //if 하트가 눌러져있으면 빈 하트로 변경 else 눌러진 하트로 변경
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        music_id_give: url,
+                        type_give: type,
+                        action_give: "unlike"
+                    },
+                    success: function (response) {
+                        console.log("unlike")
+                        i_like.addClass("no-heart").removeClass("check-heart")
+                    }
+                })
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        music_id_give: url,
+                        type_give: type,
+                        action_give: "like"
+                    },
+                    success: function (response) {
+                        console.log("like")
+                        i_like.addClass("check-heart").removeClass("no-heart")
+                    }
+                })
+
+            }
         }
 
-        function listing() {
+        function listing() {         //전체 리스팅 함수
             $.ajax({
                 type: 'GET',
                 url: '/main',
                 data: {},
                 success: function (response) {
-                    let rows = response['musics']
+                    let rows = JSON.parse(response['musics'])
                     for (let i = 0; i < rows.length; i++) {
                         let title = rows[i]['title']
                         let artist = rows[i]['artist']
                         let album_title = rows[i]['album_title']
                         let album_img = rows[i]['album_img']
                         let genre = rows[i]['genre']
-                        console.log(title, artist, album_img, album_title, genre)
-                        let temp_html = `        <div class="album-card">
-                                                    <div class="album-img-div">
-                                                        <img src="${album_img}"
-                                                             class="album-img" onclick="music_info()">
-                                                        <i onclick="heart_click()" class="fa-solid fa-heart"></i>
-                                                    </div>
+                        let url = rows[i]['melon_url']
+                        let music_id = rows[i]['_id']['$oid']  //music_카드 id
 
+                        let temp_html = `        <div class="album-card">
+                                                    <div class="album-img-div" id='${music_id}'>
+                                                        <img src="${album_img}"
+                                                             class="album-img" onclick="music_info('${music_id}')">
+                                                        <i onclick="heart_click('${music_id}','heart')" class="no-heart fa-solid fa-heart"></i>
+                                                    </div>
                                                     <div class="album-item">
                                                         <span class="music-title">${title}</span>
                                                         <span class="music-artist">${artist}</span>
@@ -67,7 +98,8 @@
             });
         }
 
-        function genre(genre_key, genre_key2, genre_key3) {
+
+        function genre(genre_key, genre_key2, genre_key3) {          //장르별 temp 해주는 함수
             $('.album-card').remove()
             $.ajax({
                 type: 'GET',
@@ -82,13 +114,13 @@
                         let album_img = rows[i]['album_img']
                         let genre = rows[i]['genre']
                         let url = rows[i]['melon_url']
-                        let temp_html = `        <div class="album-card" >
-                                                    <div class="album-img-div">
+                        let music_id = rows[i]['_id']['$oid']     //music_카드 id
+                        let temp_html = `        <div class="album-card">
+                                                    <div class="album-img-div" id='${music_id}'>
                                                         <img src="${album_img}"
-                                                             class="album-img" onclick="music_info('${url}')">
-                                                        <i onclick="heart_click()" class="fa-solid fa-heart"></i>
+                                                             class="album-img" onclick="music_info('${music_id}')">
+                                                        <i onclick="heart_click('${music_id}','heart')" class="no-heart fa-solid fa-heart"></i>
                                                     </div>
-
                                                     <div class="album-item">
                                                         <span class="music-title">${title}</span>
                                                         <span class="music-artist">${artist}</span>
@@ -187,7 +219,6 @@
                     </div>
                     <nav class="level is-mobile">
                         <div class="level-left">
-
                         </div>
                         <div class="level-right">
                             <div class="level-item">

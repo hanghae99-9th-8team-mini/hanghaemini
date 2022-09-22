@@ -141,8 +141,6 @@ body {
     position: relative;
     bottom: 35px;
     left: 125px;
-    color: orangered;
-    color:rgba(255,69,0,0.5);
     cursor: pointer;
     user-select: none;
 }
