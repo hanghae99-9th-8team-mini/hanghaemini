@@ -56,6 +56,23 @@ def music_get():
     music_list = list(db.main.find({}, {'_id': False}))
     return jsonify({'musics': music_list})
 
+@app.route('/main', methods=['POST'])
+def comment_post():
+    comment_receive = request.form['comment_give']
+
+    doc = {
+        'comment': comment_receive
+    }
+
+    db.comments.insert_one(doc);
+
+    return jsonify({'msg': '댓글등록 완료!'})
+
+@app.route("/main", methods=["GET"])
+def comment_get():
+    comment_list = list(db.comments.find({}, {'_id': False}))
+    return jsonify({'comments': comment_list})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

@@ -1,13 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
 body {
     display: flex;
-    background-color: rgba(0, 0, 0, 0.4);
+    /*background-color: rgba(0, 0, 0, 0.4);*/
+    background-image: url('/static/background.png');
+    background-size: cover;
     flex-direction: column;
     align-items: center;
 }
 
+button {
+    background: #8867a1;
+}
+
 .navbar {
     width: 100%;
+    background: gainsboro;
 }
 
 .url-button {
@@ -207,7 +220,7 @@ body {
 .modalBack {
     width: 800px;
     height: 400px;
-    background: palevioletred;
+    background: #8867a1;
     overflow: scroll;
     margin: 160px auto;
 }
@@ -218,13 +231,16 @@ body {
 
 .modalTop{
     background: whitesmoke;
-    display: flex;
-    flex-flow: row;
     margin: 0px 30px;
 }
 
+#modalCard {
+    display: flex;
+    flex-flow: row;
+    margin-bottom: 30px;
+}
+
 .songImg {
-    background: gray;
     width: 200px;
     height: 200px;
     margin: 20px 20px;
@@ -249,4 +265,21 @@ body {
 .modalBack > .field {
     width: 720px;
     margin: 20px auto;
+}
+
+.modalCommentBox {
+    display: flex;
+    flex-flow: column;
+    margin: auto;
+    width: 740px;
+}
+
+.modalComment {
+    margin: 20px 0px 16px;
+}
+
+.modalComments > .comment {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
 }
