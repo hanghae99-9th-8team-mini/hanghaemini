@@ -39,13 +39,7 @@
             $('.genre-div-p').hide();
 
             $('#k-toggle').click(function () {
-                $('.genre-div-p').hide();
-                $('.genre-div-k').show();
-            });
-
-            $('#p-toggle').click(function () {
-                $('.genre-div-k').hide();
-                $('.genre-div-p').show();
+                $('.genre-div-k').toggle();
             });
         })
     </script>
@@ -53,7 +47,7 @@
 <body>
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
+        <a class="navbar-item" href="/home">
             <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
         </a>
 
@@ -89,32 +83,24 @@
 </nav>
 <div class="tabs is-centered is-large">
     <ul>
-        <li><a id="k-toggle">가요</a></li>
-        <li><a id="p-toggle">pop</a></li>
+        <li><a id="k-toggle">장르</a></li>
     </ul>
 </div>
 <div class="genre-div-k">
-    <button id="ballad" onclick="genre()" class="button">발라드</button>
-    <button class="button">댄스</button>
-    <button class="button">R&B/소울</button>
-    <button class="button">락</button>
-    <button class="button">랩/힙합</button>
-    <button class="button">일렉트로니카</button>
-    <button class="button">인디</button>
-    <button class="button">블루스/포크</button>
+    <button onclick="genre('발라드')" class="button">발라드</button>
+    <button onclick="genre('POP')" class="button">팝</button>
+    <button onclick="genre('댄스')" class="button">댄스</button>
+    <button onclick="genre('R&B','Soul')" class="button">R&B/소울</button>
+    <button onclick="genre('록','메탈')" class="button">록/메탈</button>
+    <button onclick="genre('랩','힙합')" class="button">랩/힙합</button>
+    <button onclick="genre('일렉트로니카','하우스','클럽')" class="button">일렉트로니카</button>
+    <button onclick="genre('인디')" class="button">인디</button>
+    <button onclick="genre('블루스','포크','컨트리')" class="button">블루스/포크/컨트리</button>
 </div>
-<div class="genre-div-p">
-    <button class="button">팝</button>
-    <button class="button">락</button>
-    <button class="button">R&B/소울</button>
-    <button class="button">일렉트로니카</button>
-    <button class="button">랩/힙합</button>
-    <button class="button">블루스/포크/컨트리</button>
-</div>
+
 <div class="url-button-div">
     <button class="button is-danger url-button" onclick='$("#modal-post").addClass("is-active")'>등록하기</button>
 </div>
-
 <div class="modal" id="modal-post">
     <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
     <div class="modal-content">

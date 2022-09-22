@@ -142,6 +142,7 @@ def music_posting():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.minilogin.find_one({"username": payload["id"]})
         url_receive = request.form['url_give']
+        date_receive = request.form["date_give"]
         result = db.minisong.find_one({"melon_url": url_receive})
         if result is None:
             headers = {
@@ -153,7 +154,6 @@ def music_posting():
             div = soup.select_one('#downloadfrm > div > div > div.entry')
             title = div.select_one('div.info > div.song_name').get_text(strip=True).lstrip("곡명")
             artist = div.select_one('div.artist').text
-            # downloadfrm > div > div > div.entry > div.info > div.artist
             album_title = div.select_one('div.meta > dl > dd:nth-child(2) > a').get_text()
             album_img = soup.select_one('#downloadfrm > div > div > div.thumb > a > img')["src"]
             genre = div.select_one('div.meta > dl > dd:nth-child(6)').get_text()
@@ -169,10 +169,11 @@ def music_posting():
                 'artist': artist,
                 'album_title': album_title,
                 'album_img': album_img,
-                'genre': genre
+                'genre': genre,
+                "date": date_receive
             }
             db.minisong.insert_one(doc)
-            return jsonify({"result": "success", 'msg': '포스팅 성공'})
+            return jsonify({"result": "success", 'msg': '등록완료!'})
         else:
             return jsonify({'msg': '이미 등록된 URL입니다!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
@@ -182,10 +183,10 @@ def music_posting():
 @app.route("/posting", methods=['GET'])
 def get_posts():
     username_receive = request.args.get("username_give")
-    if username_receive != '':
-        posts = list(db.minisong.find({"username": username_receive}, {'_id': False}))
+    if username_receive == '':
+        posts = list(db.minisong.find({}, {'_id': False}).sort("date", -1))
     else:
-        posts = list(db.minisong.find({}, {'_id': False}))
+        posts = list(db.minisong.find({"username": username_receive}, {'_id': False}).sort("date", -1))
     return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "posts": posts})
 
 
