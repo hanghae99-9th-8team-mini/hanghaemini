@@ -30,6 +30,7 @@
         function heart_click(url, type) {    //하트 클릭시 정보 전송
             console.log(url, type)
             let i_like = $('#'+url).find("i")
+            let num_like =$('#'+url).find("span")
             console.log(i_like)
             if (i_like.hasClass("check-heart")) {         //if 하트가 눌러져있으면 빈 하트로 변경 else 눌러진 하트로 변경
                 $.ajax({
@@ -43,6 +44,7 @@
                     success: function (response) {
                         console.log("unlike")
                         i_like.addClass("no-heart").removeClass("check-heart")
+                        num_like.text(response["count"])
                     }
                 })
             } else {
@@ -57,6 +59,7 @@
                     success: function (response) {
                         console.log("like")
                         i_like.addClass("check-heart").removeClass("no-heart")
+                        num_like.text(response["count"])
                     }
                 })
 
@@ -77,13 +80,15 @@
                         let album_img = rows[i]['album_img']
                         let genre = rows[i]['genre']
                         let url = rows[i]['melon_url']
-                        let music_id = rows[i]['_id']['$oid']  //music_카드 id
+                        let music_id = rows[i]['_id']['$oid']
 
                         let temp_html = `        <div class="album-card">
                                                     <div class="album-img-div" id='${music_id}'>
                                                         <img src="${album_img}"
                                                              class="album-img" onclick="music_info('${music_id}')">
                                                         <i onclick="heart_click('${music_id}','heart')" class="no-heart fa-solid fa-heart"></i>
+                                                         <span class="like-num">0</span>
+
                                                     </div>
                                                     <div class="album-item">
                                                         <span class="music-title">${title}</span>
@@ -106,7 +111,7 @@
                 url: '/main',
                 data: {},
                 success: function (response) {
-                    let rows = response['musics']
+                    let rows = JSON.parse(response['musics'])
                     for (let i = 0; i < rows.length; i++) {
                         let title = rows[i]['title']
                         let artist = rows[i]['artist']
@@ -120,6 +125,7 @@
                                                         <img src="${album_img}"
                                                              class="album-img" onclick="music_info('${music_id}')">
                                                         <i onclick="heart_click('${music_id}','heart')" class="no-heart fa-solid fa-heart"></i>
+                                                        <span class="like-num">0</span>
                                                     </div>
                                                     <div class="album-item">
                                                         <span class="music-title">${title}</span>

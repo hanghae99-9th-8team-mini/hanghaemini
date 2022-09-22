@@ -78,9 +78,8 @@ def update_like():
         db.like.insert_one(doc)
     else:
         db.like.delete_one(doc)
-    # count = db.like.count_documents({"post_id": post_id_receive, "type": type_receive})
-    return jsonify({"result": "success", 'msg': 'updated'})  # , "count": count 카운트
-
+    count = db.like.count_documents({"music_id": music_id_receive, "type": type_receive})
+    return jsonify({"result": "success", 'msg': 'updated', "count": count})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

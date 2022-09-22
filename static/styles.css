@@ -140,9 +140,17 @@ body {
 .fa-heart {
     position: relative;
     bottom: 35px;
-    left: 125px;
+    left: 115px;
     cursor: pointer;
     user-select: none;
+}
+.like-num {
+    position: relative;
+    bottom: 35px;
+    left: 115px;
+    color: rgba(255,69,0,0.7);
+    font-weight: bold;
+
 }
 .no-heart{
     color:rgba(255,69,0,0.5)
