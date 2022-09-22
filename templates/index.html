@@ -8,6 +8,7 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/54e57a84b2.js" crossorigin="anonymous"></script>
     <style>
 
     </style>
@@ -19,19 +20,17 @@
             $('.genre-div-p').hide();
 
             $('#k-toggle').click(function () {
-                $('.genre-div-p').hide();
-                $('.genre-div-k').show();
+                $('.genre-div-k').toggle();
             });
 
-            $('#p-toggle').click(function () {
-                $('.genre-div-k').hide();
-                $('.genre-div-p').show();
-            });
         })
-
 
         function music_info() {
             alert("상세페이지test")
+        }
+
+        function heart_click() {
+            alert("하트를 눌렀습니다!")
         }
 
         function listing() {
@@ -47,31 +46,66 @@
                         let album_title = rows[i]['album_title']
                         let album_img = rows[i]['album_img']
                         let genre = rows[i]['genre']
-
                         console.log(title, artist, album_img, album_title, genre)
-                        let temp_html = `<div class="album-card" onclick="music_info()">
-                                            <img src="${album_img}"
-                                                 class="album-img">
-                                            <div class="album-item">
-                                                <span class="music-title">${title}</span>
-                                                <span class="music-artist">${artist}</span>
-                                                <span class="album-title">${album_title}</span>
-                                                <span class="album-genre" id="genre">${genre}</span>
-                                            </div>
-                                        </div>`
+                        let temp_html = `        <div class="album-card">
+                                                    <div class="album-img-div">
+                                                        <img src="${album_img}"
+                                                             class="album-img" onclick="music_info()">
+                                                        <i onclick="heart_click()" class="fa-solid fa-heart"></i>
+                                                    </div>
+
+                                                    <div class="album-item">
+                                                        <span class="music-title">${title}</span>
+                                                        <span class="music-artist">${artist}</span>
+                                                        <span class="album-title">${album_title}</span>
+                                                        <span class="album-genre" id="genre">${genre}</span>
+                                                    </div>
+                                                </div>`
                         $('#card-div').append(temp_html)
                     }
                 }
             });
         }
 
-        // function genre()
-        // let genre_text = $('.album-genre').text();
+        function genre(genre_key, genre_key2, genre_key3) {
+            $('.album-card').remove()
+            $.ajax({
+                type: 'GET',
+                url: '/main',
+                data: {},
+                success: function (response) {
+                    let rows = response['musics']
+                    for (let i = 0; i < rows.length; i++) {
+                        let title = rows[i]['title']
+                        let artist = rows[i]['artist']
+                        let album_title = rows[i]['album_title']
+                        let album_img = rows[i]['album_img']
+                        let genre = rows[i]['genre']
+                        let url = rows[i]['melon_url']
+                        let temp_html = `        <div class="album-card" >
+                                                    <div class="album-img-div">
+                                                        <img src="${album_img}"
+                                                             class="album-img" onclick="music_info('${url}')">
+                                                        <i onclick="heart_click()" class="fa-solid fa-heart"></i>
+                                                    </div>
 
+                                                    <div class="album-item">
+                                                        <span class="music-title">${title}</span>
+                                                        <span class="music-artist">${artist}</span>
+                                                        <span class="album-title">${album_title}</span>
+                                                        <span class="album-genre" id="genre">${genre}</span>
+                                                    </div>
+                                                </div>`
+                        if (genre.includes(genre_key) || genre.includes(genre_key2) || genre.includes(genre_key3)) {
+                            $('#card-div').append(temp_html)
+                        }
+                    }
+                }
+            });
+        }
 
         function post() {
             let url = $('#url-input').val()
-            let genre = $('#genre-input').val()
             if (url == "") {
                 alert("URL을 입력하세요!")
             } else {
@@ -98,7 +132,6 @@
         <a class="navbar-item" href="https://bulma.io">
             <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
         </a>
-
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -108,7 +141,6 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-
 
         </div>
         <div class="navbar-end">
@@ -124,28 +156,21 @@
 </nav>
 <div class="tabs is-centered is-large">
     <ul>
-        <li><a id="k-toggle">가요</a></li>
-        <li><a id="p-toggle">pop</a></li>
+        <li><a id="k-toggle">장르</a></li>
     </ul>
 </div>
 <div class="genre-div-k">
-    <button onclick="genre()" class="button">발라드</button>
-    <button class="button">댄스</button>
-    <button class="button">R&B/소울</button>
-    <button class="button">락</button>
-    <button class="button">랩/힙합</button>
-    <button class="button">일렉트로니카</button>
-    <button class="button">인디</button>
-    <button class="button">블루스/포크</button>
+    <button onclick="genre('발라드')" class="button">발라드</button>
+    <button onclick="genre('POP')" class="button">팝</button>
+    <button onclick="genre('댄스')" class="button">댄스</button>
+    <button onclick="genre('R&B','Soul')" class="button">R&B/소울</button>
+    <button onclick="genre('록','메탈')" class="button">록/메탈</button>
+    <button onclick="genre('랩','힙합')" class="button">랩/힙합</button>
+    <button onclick="genre('일렉트로니카','하우스','클럽')" class="button">일렉트로니카</button>
+    <button onclick="genre('인디')" class="button">인디</button>
+    <button onclick="genre('블루스','포크','컨트리')" class="button">블루스/포크/컨트리</button>
 </div>
-<div class="genre-div-p">
-    <button class="button">팝</button>
-    <button class="button">락</button>
-    <button class="button">R&B/소울</button>
-    <button class="button">일렉트로니카</button>
-    <button class="button">랩/힙합</button>
-    <button class="button">블루스/포크/컨트리</button>
-</div>
+
 <div class="url-button-div">
     <button class="button is-danger url-button" onclick='$("#modal-post").addClass("is-active")'>등록하기</button>
 </div>
@@ -183,7 +208,7 @@
 </div>
 <div class="containers">
     <div class="content" id="card-div">
-
+        <!--카드공간-->
     </div>
     <div class="moveTopBtn" style="cursor:pointer;" onclick="window.scrollTo(0,0);">
         <span class="material-symbols-outlined" style="font-size: 50px">

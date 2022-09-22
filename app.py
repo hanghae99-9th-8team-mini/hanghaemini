@@ -27,7 +27,6 @@ def upload_music():
         div = soup.select_one('#downloadfrm > div > div > div.entry')
         title = div.select_one('div.info > div.song_name').get_text(strip= True).lstrip("곡명")
         artist = div.select_one('div.artist').text
-        # downloadfrm > div > div > div.entry > div.info > div.artist
         album_title = div.select_one('div.meta > dl > dd:nth-child(2) > a').get_text()
         album_img = soup.select_one('#downloadfrm > div > div > div.thumb > a > img')["src"]
         genre = div.select_one('div.meta > dl > dd:nth-child(6)').get_text()
@@ -49,7 +48,7 @@ def upload_music():
 
 @app.route("/main", methods=["GET"])
 def music_get():
-    music_list = list(db.main.find({}, {'_id': False}))
+    music_list = list(db.main.find({},{'_id': False}))
     return jsonify({'musics':music_list})
 
 if __name__ == '__main__':
