@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+
+    <style>
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            listing()
+
+            $('.genre-div-k').hide();
+            $('.genre-div-p').hide();
+
+            $('#k-toggle').click(function () {
+                $('.genre-div-p').hide();
+                $('.genre-div-k').show();
+            });
+
+            $('#p-toggle').click(function () {
+                $('.genre-div-k').hide();
+                $('.genre-div-p').show();
+            });
+        })
+
+        function openModal(getUrl) { //getUrl부분이 클릭할 때 가져오는 url
+            $('#modalCard').remove() // append 하는 부분을 하나의 div로 묶고 id값 줘서 remove 해주면 기존 데이터 삭제됨
+            $('#modalBox').removeClass('displayNone') // 클릭하면 displayNone 클래스가 지워지면서 모달창이 나타남
+            $.ajax({
+                type: 'GET',
+                url: '/main',
+                data: {},
+                success: function (response) {
+                    let rows = response['musics']
+                    for (let i = 0; i < rows.length; i++) {
+                        let title = rows[i]['title']
+                        let artist = rows[i]['artist']
+                        let album_title = rows[i]['album_title']
+                        let album_img = rows[i]['album_img']
+                        let genre = rows[i]['genre']
+                        let url = rows[i]['melon_url']
+
+                        {# 클릭했을 때 가져온 url이 DB에 저장된 url과 일치하면, append #}
+                        if (url==getUrl) {
+                            let temp_html = `<div id="modalCard">
+                                                <img class="songImg" src="${album_img}">
+                                                    <div class="wrap1">
+                                                        <span class="music-title">${title}</span>
+                                                        <span class="music-artist">${artist}</span>
+                                                        <br>
+                                                        <span class="album-title">${album_title}</span>
+                                                        <span class="album-genre" id="genre">${genre}</span>
+                                                    </div>
+                                                </div>`
+                            $('#modalInfo').append(temp_html)
+                        }
+                    }
+                }
+            })
+        }
+
+
+        function listing() {
+            $.ajax({
+                type: 'GET',
+                url: '/main',
+                data: {},
+                success: function (response) {
+                    let rows = response['musics']
+                    for (let i = 0; i < rows.length; i++) {
+                        let title = rows[i]['title']
+                        let artist = rows[i]['artist']
+                        let album_title = rows[i]['album_title']
+                        let album_img = rows[i]['album_img']
+                        let genre = rows[i]['genre']
+                        let url = rows[i]['melon_url']
+
+                        console.log(title, artist, album_img, album_title, genre)
+                        {# 클릭할 때 url 값을 가져오기 ()괄호 안에 '' 작은따옴표 꼭 넣어야함 #}
+                        let temp_html = `<div class="album-card" onclick="openModal('${url}')">
+                                            <img src="${album_img}"
+                                                 class="album-img">
+                                            <div class="album-item">
+                                                <span class="music-title">${title}</span>
+                                                <span class="music-artist">${artist}</span>
+                                                <span class="album-title">${album_title}</span>
+                                                <span class="album-genre" id="genre">${genre}</span>
+                                            </div>
+                                        </div>`
+                        $('#card-div').append(temp_html)
+                    }
+                }
+            });
+        }
+
+        // function genre()
+        // let genre_text = $('.album-genre').text();
+
+        function post() {
+            let url = $('#url-input').val()
+            let genre = $('#genre-input').val()
+            if (url == "") {
+                alert("URL을 입력하세요!")
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/main',
+                    data: {url_give: url},
+                    success: function (response) {
+                        if (response['msg'] == '이미 등록된 URL입니다!') {
+                            alert(response['msg'])
+                        } else {
+                            alert(response['msg'])
+                            window.location.reload()
+                        }
+                    }
+                });
+            }
+        }
+
+        $(document).mouseup(function (e) {
+            let ModalBox = $('#modalBox');
+            if (ModalBox.has(e.target).length === 0) {
+                ModalBox.addClass("displayNone");
+            }
+        });
+
+        function closeBtn() {
+            $('#modalBox').addClass('displayNone')
+        }
+    </script>
+</head>
+<body>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+
+
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-primary">
+                        <strong>로그인</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="tabs is-centered is-large">
+    <ul>
+        <li><a id="k-toggle">가요</a></li>
+        <li><a id="p-toggle">pop</a></li>
+    </ul>
+</div>
+<div class="genre-div-k">
+    <button onclick="genre()" class="button">발라드</button>
+    <button class="button">댄스</button>
+    <button class="button">R&B/소울</button>
+    <button class="button">락</button>
+    <button class="button">랩/힙합</button>
+    <button class="button">일렉트로니카</button>
+    <button class="button">인디</button>
+    <button class="button">블루스/포크</button>
+</div>
+<div class="genre-div-p">
+    <button class="button">팝</button>
+    <button class="button">락</button>
+    <button class="button">R&B/소울</button>
+    <button class="button">일렉트로니카</button>
+    <button class="button">랩/힙합</button>
+    <button class="button">블루스/포크/컨트리</button>
+</div>
+<div class="url-button-div">
+    <button class="button is-danger url-button" onclick='$("#modal-post").addClass("is-active")'>등록하기</button>
+</div>
+
+<div class="modal" id="modal-post">
+    <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
+    <div class="modal-content">
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="field">
+                        <span class="article-span">URL</span>
+                        <input id="url-input" class="input is-link" type="text" placeholder="URL을 입력하세요">
+                    </div>
+                    <nav class="level is-mobile">
+                        <div class="level-left">
+
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <a class="button is-danger" onclick="post()">등록하기</a>
+                            </div>
+                            <div class="level-item">
+                                <a class="button is-dark is-outlined"
+                                   onclick='$("#modal-post").removeClass("is-active")'>취소</a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </article>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"
+            onclick='$("#modal-post").removeClass("is-active")'></button>
+</div>
+<div class="containers">
+    <div class="content" id="card-div">
+    </div>
+
+    <div class="moveTopBtn" style="cursor:pointer;" onclick="window.scrollTo(0,0);">
+        <span class="material-symbols-outlined" style="font-size: 50px">
+            expand_less
+        </span>
+    </div>
+</div>
+<div class="modalBox displayNone" id="modalBox">
+    <div class="modalBack">
+        <button onclick="closeBtn()" class="delete"></button>
+        <section class="modalTop" id="modalInfo">
+        </section>
+        <section class="commentBox">
+            <figure class="image is-64x64">
+                <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+            </figure>
+        </section>
+        <div class="field">
+            <div class="control">
+                <textarea class="textarea is-small" placeholder="Small textarea"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
