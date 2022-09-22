@@ -22,6 +22,7 @@
     <script>
         $(document).ready(function () {
             listing()
+            comment_get()
 
             $('.genre-div-k').hide();
             $('.genre-div-p').hide();
@@ -135,10 +136,10 @@
         }
 
         function comment_get() {
-            $('#commentWrite').empty()
+            $('#modalCommentsWrap').empty()
             $.ajax({
                 type: 'GET',
-                url: '/main',
+                url: '/comment',
                 data: {},
                 success: function (response) {
                     let rows = response['comments']
@@ -158,7 +159,6 @@
                                                 </div>
                                             </div>
                                         </div>`
-                        console.log(comment)
                         $('#modalCommentsWrap').append(temp_html)
                     }
                 }
@@ -172,15 +172,15 @@
             } else {
                 $.ajax({
                     type: 'POST',
-                    url: '/main',
+                    url: '/comment',
                     data: {comment_give: comment},
                     success: function (response) {
-                            alert(response['msg'])
-                            window.location.reload()
-                        }
-                    });
-                }
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                });
             }
+        }
 
 
         $(document).mouseup(function (e) {
@@ -303,7 +303,8 @@
         <div class="modalCommentBox">
             <div class="input-group modalComment">
                 <span class="input-group-text">댓글 남기기</span>
-                <textarea id="commentWrite" placeholder="최대 90글자까지 입력이 가능합니다." class="form-control" aria-label="With textarea"></textarea>
+                <textarea id="commentWrite" placeholder="최대 90글자까지 입력이 가능합니다." class="form-control"
+                          aria-label="With textarea"></textarea>
                 <button onclick="comment_post()" type="button" class="btn btn-dark">댓글 쓰기</button>
             </div>
             {# 댓글 기록되는 창 #}

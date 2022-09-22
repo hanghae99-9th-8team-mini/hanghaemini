@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 from pymongo import MongoClient
 
-client = MongoClient('mongodb+srv://pyo:jk1jk2jk3@cluster0.nygwmem.mongodb.net/Cluster0?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://test:sparta@cluster0.y0pyp8r.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta
 
 
@@ -56,7 +56,7 @@ def music_get():
     music_list = list(db.main.find({}, {'_id': False}))
     return jsonify({'musics': music_list})
 
-@app.route('/main', methods=['POST'])
+@app.route('/comment', methods=['POST'])
 def comment_post():
     comment_receive = request.form['comment_give']
 
@@ -64,11 +64,11 @@ def comment_post():
         'comment': comment_receive
     }
 
-    db.comments.insert_one(doc);
+    db.comments.insert_one(doc)
 
     return jsonify({'msg': '댓글등록 완료!'})
 
-@app.route("/main", methods=["GET"])
+@app.route("/comment", methods=["GET"])
 def comment_get():
     comment_list = list(db.comments.find({}, {'_id': False}))
     return jsonify({'comments': comment_list})
