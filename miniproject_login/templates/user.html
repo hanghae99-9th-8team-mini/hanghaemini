@@ -49,6 +49,31 @@
                 $('.genre-div-p').show();
             });
     })
+
+    function update_profile() {
+            let nickname = $('#input-nickname').val()
+            let file = $('#input-pic')[0].files[0]
+            let form_data = new FormData()
+            form_data.append("file_give", file)
+            form_data.append("nickname_give", nickname)
+            console.log(nickname, file, form_data)
+
+            $.ajax({
+                type: "POST",
+                url: "/update_profile",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        alert(response["msg"])
+                        window.location.reload()
+
+                    }
+                }
+            });
+        }
 </script>
 <body>
 <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -57,7 +82,6 @@
             <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" >
         </a>
 
-        <a href="/user/{{ user_info.profile_name }}">
         <article class="media" style="margin:auto 10px auto auto">
             <figure class="media-left" style="align-self: center;">
                 <a class="image is-96x96" href="#" style="width: 35px; height:35px">
@@ -110,11 +134,11 @@
                         <article class="media">
                             <div class="media-content">
                                 <div class="field">
-                                    <label class="label" for="input-name">이름</label>
+                                    <label class="label" for="input-nickname">닉네임</label>
 
                                     <p class="control">
 
-                                        <input id="input-name" class="input"
+                                        <input id="input-nickname" class="input"
                                                placeholder="홍길동" value="{{ user_info.profile_name }}">
                                     </p>
                                 </div>

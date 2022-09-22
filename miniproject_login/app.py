@@ -118,10 +118,8 @@ def save_img():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         username = payload["id"]
         nickname_receive = request.form["nickname_give"]
-        about_receive = request.form["about_give"]
         new_doc = {
             "profile_name": nickname_receive,
-            "profile_info": about_receive
         }
         if 'file_give' in request.files:
             file = request.files["file_give"]
