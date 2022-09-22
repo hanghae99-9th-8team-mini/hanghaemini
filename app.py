@@ -164,12 +164,6 @@ def get_posts():
             post["count_heart"] = db.likes.count_documents({"post_id": post["_id"], "type": "heart"})
             post["heart_by_me"] = bool(db.likes.find_one({"post_id": post["_id"], "type": "heart", "username": my_username}))
 
-            post["count_star"] = db.likes.count_documents({"post_id": post["_id"], "type": "star"})
-            post["star_by_me"] = bool(db.likes.find_one({"post_id": post["_id"], "type": "star", "username": my_username}))
-
-            post["count_like"] = db.likes.count_documents({"post_id": post["_id"], "type": "like"})
-            post["like_by_me"] = bool(db.likes.find_one({"post_id": post["_id"], "type": "like", "username": my_username}))
-
         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "posts": posts})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
